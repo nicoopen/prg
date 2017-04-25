@@ -1,0 +1,176 @@
+-- ============================================================================
+-- Grundlagen der Programmierung 2 
+-- Aufgabenblatt 1
+-- ============================================================================
+
+import Data.List
+
+-- =============================================================================
+-- =
+-- = Aufgabe 1
+-- =
+{-Falls die Funktion mit mehr als 100 Klausurpunkte oder 20 Bonuspunkte ausgeführt wird,
+	wird ein entsprechender error ausgegeben. Ansonsten wird mit einer else-if-Kette überprüft,
+	ob für die, für die beste Note bnötigten, Punkte erreicht oder übertroffen wurden,
+	falls nicht, dann für die zweitbeste Note usw. 
+	Falls zu wenige Punkte zum Bestehen erreicht wurden, wird eine 5.0 ausgegeben. -}
+berechneNote :: Float -> Float -> Float
+berechneNote x y = if x > 100 then error "Es können nicht mehr als 100 Klausurpunkte erreicht werden"
+	else if y > 20 then error "So viele Bonuspunkte können nicht erreicht werden"
+		else if x + y >= 86 then 1.0
+			else if x + y >= 82 then 1.3
+				else if x +y >= 78 then 1.7
+					else if x + y >= 74 then 2.0
+						else if x + y >= 70 then 2.3 
+							else if x + y >= 66 then 2.7
+								else if x + y >= 62 then 3.0
+									else if x + y >= 58 then 3.3
+										else if x + y >= 54 then 3.7
+											else if x + y >= 50 then 4.0
+												else 5.0
+
+-- =
+-- =
+-- =============================================================================
+
+-- =============================================================================
+-- =
+-- = Aufgabe 2
+-- =
+-- = ---------------------------------------------------------------------------
+-- = - zeigeSpielfeld und Beispielmatrizen.
+-- = -
+
+zeigeSpielfeld spieler spielfeld =
+   putStrLn $ unlines $ map (concat . map (\x -> if x /= spieler then "0" else show spieler))
+                [[spielfeld j i | i <- [1..dim]] | j <- [1..dim]]
+ where
+   dim = length . takeWhile (>(-1)) $ [spielfeld i 1 | i <- [1..]]
+
+spielfeldA 1 1 = 0
+spielfeldA 1 2 = 1
+spielfeldA 1 3 = 0
+spielfeldA 2 1 = 2
+spielfeldA 2 2 = 0
+spielfeldA 2 3 = 0
+spielfeldA 3 1 = 1
+spielfeldA 3 2 = 0
+spielfeldA 3 3 = 2
+spielfeldA _ _ = -1
+
+spielfeldB 1 1 = 0
+spielfeldB 1 2 = 0
+spielfeldB 1 3 = 0
+spielfeldB 1 4 = 0
+spielfeldB 1 5 = 0
+spielfeldB 2 1 = 0
+spielfeldB 2 2 = 0
+spielfeldB 2 3 = 1
+spielfeldB 2 4 = 1
+spielfeldB 2 5 = 0
+spielfeldB 3 1 = 0
+spielfeldB 3 2 = 0
+spielfeldB 3 3 = 0
+spielfeldB 3 4 = 0
+spielfeldB 3 5 = 0
+spielfeldB 4 1 = 0
+spielfeldB 4 2 = 2
+spielfeldB 4 3 = 2
+spielfeldB 4 4 = 0
+spielfeldB 4 5 = 0
+spielfeldB 5 1 = 0
+spielfeldB 5 2 = 0
+spielfeldB 5 3 = 0
+spielfeldB 5 4 = 0
+spielfeldB 5 5 = 0
+spielfeldB _ _ = -1
+
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe a)
+-- = -
+{-Um zu überprüfen, ob sich auf einem Feld in einem Spielfeld ein Floss befindet, wird das Spielfeld
+mit entsprechenden Koordinaten abgerufen. Falls das ergebnis über null liegt gibt es ein Floss. -}
+flossAufFeld x y s  = if s x y > 0 then True else False
+
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe b)
+-- = -
+{-Es wird geprüft, ob auf dem eingegebenen Feld ein Floss des eingegeben Spielers befindet.
+dafür verlangt die Funktion ein bestimmtes Feld in einem Spielfeld und einen Spieler.
+falls das Ergebnis von spielfeldA/B x y gleich der Zahl des Spielers ist, ist die Funktion wahr.-}
+schlechteidee k x y s= if k == s x y then True
+	else False
+
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe c)
+-- = -
+{-Die Funktion bombardiere hat zum Ziel, die Abfrage der Funktion spielfeldA/B in dem "bombardierten"
+Feld so zu manipulieren, dass sich kein Floss mehr befindet. Um das zu gewährleisten, 
+wird eine anonyme Funktion zur rate gezogen, die das Ergebnis von spielfeldA/B in entsprechenden Feld
+mit Null multipliziert, falls das Feld dem abgefragten Feld entspricht.-}
+
+bombardiere x y s =  (\a b -> if a == x && b == y then 0 * s a b else s a b)
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe d)
+-- = -
+{-Idee ist es es die jeweiligen Koordinaten immer um eins zu erheben bis sie
+	außerhalb des Spielfeldes liegen, sprich das ergebnis von spielfeldA x y zu minus eins wird. 
+	Dann möchte ich diese Koordinaten, als sie noch im Spielfeld waren, ausgeben.-}
+spielfeldGroesse s = if s 1 1 < 0 then error "Es gibt kein Feld."
+	else zaehler s 1 1
+--zaehler :: Integer -> Integer -> Integer
+zaehler s x y = if s (x + 1) (y + 1) < 0 then x
+	else zaehler s (x + 1) (y + 1)
+
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe e)
+-- = -
+{-Um die Anzahl der Floesse zu bestimmen, habe ich eine Hilfsfunktion angelegt, 
+die ich auf dem Feld 1,1 des entsprechenden Spielfeldes beginnen lasse, und die dann nacheinander 
+für jedes folgende Feld der zuvor gewählten Matrix prüft, ob sich dort ein Floss des abgefragten
+Spielers befindet. die Floesse werden in der Variabel z gezählt und diese wird ausgegeben,
+wenn die Funktion am Ende der Matrix angelangt ist, sprich die x und y Variabel der Spielfeldgroesse
+entspricht.-}
+anzahlFloesse k s = zaehler2 1 1 k s 0
+zaehler2 x y k s z = if ((x == spielfeldGroesse s + 1) && (y == spielfeldGroesse s)) then z 
+	                     else if s x y == k 
+							     then zaehler2 (x + 1) y k s (z + 1)
+	                             else if s x y >= 0 
+									    then zaehler2 (x + 1) y k s z
+		                                else zaehler2 1 (y + 1) k s z
+	
+	
+	
+			
+	
+
+-- = -
+-- = -
+-- = ---------------------------------------------------------------------------
+-- = -
+-- = - Aufgabe f)
+-- = -
+{-Beim Ergebnis möchte ich überprüfen, ob ein Spieler noch mindestens ein Floss hat,
+während gleichzeitig keines mehr hat. 
+Um das zu überprüfen, rufe ich meine Funktion zaehler2, die die Anzahl der Flosse eines Spielers berechnet.
+falls diese mindestens eins und für den anderen null beträgt, hat der Spieler mit mindestens einem Floss gewonnen.
+Ansonsten ist das ergebnis unentschieden oder noch am laufen.-}
+ergebnis s = if (zaehler2 1 1 2 s 0 >= 1 && zaehler2 1 1 1 s 0 == 0) then 2
+	else if (zaehler2 1 1 1 s 0 >= 1 && zaehler2 1 1 2 s 0 == 0) then 1
+		else if (zaehler2 1 1 2 s 0 == 0 && zaehler2 1 1 1 s 0 == 0) then error "Beide verloren"
+			else 0
