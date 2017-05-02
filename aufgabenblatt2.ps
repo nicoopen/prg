@@ -1,0 +1,252 @@
+Julian Gegner
+Matrikelnummer: 6275877
+Tutorium: Montag 14-16
+
+
+Aufgabe 1
+
+a) 	referenziert direkt:
+	f1,f2
+	f2,f5 ; f2,f1 
+	f3,f4 ; f3,f5
+	f4,f5 ; f4,f3, ; f4,f4
+	f5,f5
+	
+b) 	referenziert:
+	f1,f2 ; f1,f5 ; f1,f1
+	f2,f5 ; f2,f1 ; f2,f2
+	f3,f4 ; f3,f5 ; f3,f3
+	f4,f5 ; f4,f3 ; f4,f4
+	f5,f5
+	
+c)	direkt rekursiv:
+	f4 ; f5
+	
+d)	rekursiv;
+	f1 ; f2 ; f3 ; f4 ; f5
+	
+e) 	verschränkt rekursiv:
+	(f1,f2) ; (f2,f1) ; (f3,f4) ; (f4,f3)
+	
+
+Aufgabe 2
+
+a) 
+					z1		z2		z3		z4
+iterativ
+endrekursiv
+linear rekursiv
+Baum-rekursiv
+gesch. Baum-rek.
+
+b)
+summe1 x = if x <= 0
+		   then 0
+		   else x + summe1 (x-1)
+		   
+summe2 x = 
+
+
+
+
+summe2hilfe =
+
+
+
+
+
+Aufgabe 3
+
+f x y z = if y >= 17 
+		  then (if y < 25 then x*5 else f (x+3) (y+8) z)
+		  else f (x+3) (y+8) z
+		  
+a) Auswertung in normaler Reihenfolge von f 1 2 (f 13 50 42) 
+	
+	
+D	f = if 2 >= 17
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+I	f = if False 
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+	f = f (1+3) (2+8) (f 13 50 42)
+	
+D	f = if (2+8) >= 17
+		then (if (2+8) < 25 then (1+3)*5 else f ((1+3)+3) ((2+8)+8) (f 13 50 42))
+		else f ((1+3)+3) ((2+8)+8) (f 13 50 42)
+		
+A	f = if 10 >= 17
+		then (if (2+8) < 25 then (1+3)*5 else f ((1+3)+3) ((2+8)+8) (f 13 50 42))
+		else f ((1+3)+3) ((2+8)+8) (f 13 50 42)
+		
+I	f = if False
+		then (if (2+8) < 25 then (1+3)*5 else f ((1+3)+3) ((2+8)+8) (f 13 50 42))
+		else f ((1+3)+3) ((2+8)+8) (f 13 50 42)
+		
+	f = f ((1+3)+3) ((2+8)+8) (f 13 50 42)
+	
+D	f = if ((2+8)+8) >= 17
+		then (if ((2+8)+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+A	f = if (10+8) >= 17
+		then (if ((2+8)+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+A	f = if 18 >= 17
+		then (if ((2+8)+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+I	f = if True
+		then (if ((2+8)+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+D	f = if ((2+8)+8) < 25 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+A	f = if (10+8) < 25 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+A	f = if 18 < 25 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+I	f = True 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (((2+8)+8)+8) (f 13 50 42)
+		
+A	f = ((1+3)+3)*5
+	
+A	f = (4+3)*5
+	
+A	f = 7*5
+	
+	f = 35
+	
+	
+b) Auswertung in applikativer Reihenfolge von f 1 2 (f 13 50 42) 
+
+
+D	f = if 2 >= 17
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+I	f = if False
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+	f = f (1+3) (2+8) (f 13 50 42)
+	
+D	f = f (1+3) (2+8) (if 50 >= 17
+					   then (if 50 < 25 then 13*5 else f (13+3) (50+8) 42)
+					   else f (13+3) (50+8) 42)
+					   
+I	f = f (1+3) (2+8) (if True
+					   then (if 50 < 25 then 13*5 else f (13+3) (50+8) 42)
+					   else f (13+3) (50+8) 42)
+					   
+I	f = f (1+3) (2+8) (if 50 < 25 
+					   then 13*5 
+					   else f (13+3) (50+8) 42)
+					   
+I	f = f (1+3) (2+8) (if False 
+					   then 13*5 
+					   else f (13+3) (50+8) 42)
+	
+	f = f (1+3) (2+8) (f (13+3) (50+8) 42)
+	
+D	f = f (1+3) (2+8) (if (50+8) >= 17
+					   then (if (50+8) < 25 then (13+3)*5 else f ((13+3)+3) ((50+8)+8) 42)
+					   else f ((13+3)+3) ((50+8)+8) 42)
+					   
+A	f = f (1+3) (2+8) (if 58 >= 17
+					   then (if (50+8) < 25 then (13+3)*5 else f ((13+3)+3) ((50+8)+8) 42)
+					   else f ((13+3)+3) ((50+8)+8) 42)
+					   
+I	f = f (1+3) (2+8) (if True
+					   then (if (50+8) < 25 then (13+3)*5 else f ((13+3)+3) ((50+8)+8) 42)
+					   else f ((13+3)+3) ((50+8)+8) 42)
+	
+I	f = f (1+3) (2+8) (if (50+8) < 25 then (13+3)*5 else f ((13+3)+3) ((50+8)+8) 42)
+	
+A	f = f (1+3) (2+8) (if 58 < 25 then (13+3)*5 else f ((13+3)+3) ((50+8)+8) 42)
+	
+
+Programm wiederholt sich immer weiter und wird zu keinem Ergebnis kommen, da die y-Variable mit jeder Wiederholung
+größer wird und dementsprechend zwar immer >= 17 sein wird, aber nie < 25, was durch das else-Statement zu einer 
+erneuten Wiederholung führt.
+
+c) Auswertung in verzögerter Reihenfolge von f 1 2 (f 13 50 42) 
+
+
+f = if 2 >= 17
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+I	f = if False 
+		then (if 2 < 25 then 1*5 else f (1+3) (2+8) (f 13 50 42))
+		else f (1+3) (2+8) (f 13 50 42)
+		
+	f = f (1+3) (2+8) (f 13 50 42)
+	
+D	f = if (2+8) >= 17
+		then (if (2+8) < 25 then (1+3)*5 else f ((1+3)+3) ((2+8)+8) (f 13 50 42))
+		else f ((1+3)+3) ((2+8)+8) (f 13 50 42)
+		
+A	f = if 10 >= 17
+		then (if (10) < 25 then (1+3)*5 else f ((1+3)+3) ((10)+8) (f 13 50 42))
+		else f ((1+3)+3) ((10)+8) (f 13 50 42)
+		
+I	f = if False
+		then (if (10) < 25 then (1+3)*5 else f ((1+3)+3) ((10)+8) (f 13 50 42))
+		else f ((1+3)+3) ((10)+8) (f 13 50 42)
+		
+	f = f ((1+3)+3) ((10)+8) (f 13 50 42)
+	
+D	f = if (10+8) >= 17
+		then (if (10+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) ((10+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) ((10+8)+8) (f 13 50 42)
+		
+A	f = if (10+8) >= 17
+		then (if (10+8) < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) ((10+8)+8) (f 13 50 42))
+		else f (((1+3)+3)+3) ((10+8)+8) (f 13 50 42)
+				
+I	f = if 18 >= 17
+		then (if 18 < 25 then ((1+3)+3)*5 else f (((1+3)+3)+3) ((18+8) (f 13 50 42))
+		else f (((1+3)+3)+3) (18+8) (f 13 50 42)
+		
+D	f = if 18 < 25 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (18+8) (f 13 50 42)
+		
+		
+I	f = True 
+		then ((1+3)+3)*5 
+		else f (((1+3)+3)+3) (18+8) (f 13 50 42)
+		
+A	f = ((1+3)+3)*5
+	
+A	f = (4+3)*5
+	
+A	f = 7*5
+	
+	f = 35
+	
+	
+d) g x y z = if y >= 17 && y < 25 
+		  then x*5 
+		  else f (x+3) (y+8) z
+		  
+	Testlauf: *Main> f 1 2 (f 13 50 42)
+				35
+			  *Main> g 1 2 (f 13 50 42)
+				35
+			  *Main> f 3 4 5
+				45
+              *Main> g 3 4 5
+				45
